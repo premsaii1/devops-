@@ -1,0 +1,16 @@
+---
+- name: Deploy to Azure App Service
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Deploy Docker image to Azure App Service
+      azure.azcollection.azure_rm_appservice:
+        resource_group: devops-rg
+        name: smartweatherappservice
+        plan: smartweather-plan
+        location: Central India
+        container_settings:
+          image_name: smartweatheracr.azurecr.io/devops-app:latest
+          registry_server_url: https://smartweatheracr.azurecr.io
+          registry_username: "{{ lookup('env', 'ACR_USERNAME') }}"
+          registry_password: "{{ lookup('env', 'ACR_PASSWORD') }}"
